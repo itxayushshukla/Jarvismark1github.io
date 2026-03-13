@@ -7,7 +7,21 @@ function speak(text){
 
     text_speak.rate = 1;
     text_speak.volume = 1;
-    text_speak.pitch = 1;
+    text_speak.pitch = 0.8;
+
+    const voices = window.speechSynthesis.getVoices();
+    const maleVoice = voices.find(v =>
+        v.name.toLowerCase().includes('male') ||
+        v.name.toLowerCase().includes('david') ||
+        v.name.toLowerCase().includes('mark') ||
+        v.name.toLowerCase().includes('james') ||
+        v.name.toLowerCase().includes('daniel') ||
+        v.name.toLowerCase().includes('guy') ||
+        v.name.toLowerCase().includes('alex') ||
+        v.name.toLowerCase().includes('fred') ||
+        v.name.toLowerCase().includes('richard')
+    );
+    if(maleVoice) text_speak.voice = maleVoice;
 
     window.speechSynthesis.speak(text_speak);
 }
@@ -31,6 +45,10 @@ function wishMe(){
 }
 
 window.addEventListener('load', ()=>{
+    // Preload voices (browsers load them async)
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
     speak("Initializing JARVIS..");
     wishMe();
 });
